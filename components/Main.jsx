@@ -1,34 +1,53 @@
 import { useEffect, useState } from "react";
-
-import { FlatList, View, ScrollView, ActivityIndicator } from "react-native";
-import { getLatestGames } from "../lib/metacritic";
+import {
+  View,
+  ActivityIndicator,
+  FlatList, // Import ScrollView from react-native instead
+} from "react-native";
+import { getLatestComics } from "../lib/marvel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AnimatedGameCard } from "./GameCard";
-import { Logo } from "./Logo";
+import { AnimatedComicCard, ComicCard } from "./ComicCard"; // Import ComicCard component
+import { Logo } from "./Logo"; // Import Logo component
 
 export function Main() {
-  const [games, setGames] = useState([]);
+  const [comics, setComics] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    getLatestGames().then((games) => {
-      setGames(games);
-    });
+    // Fetch comics when the component mounts
+    fetchComics();
   }, []);
+
+  const fetchComics = async () => {
+    try {
+      setLoading(true);
+      const comicsData = await getLatestComics();
+      setComics(comicsData);
+      setError(null);
+    } catch (err) {
+      console.error("Failed to fetch comics:", err);
+      setError("Failed to load comics. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <View style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
       <View style={{ marginBottom: 20 }}>
         <Logo />
       </View>
-      {games.length === 0 ? (
+
+      {comics.length === 0 ? (
         <ActivityIndicator color={"#fff"} size={"large"} />
       ) : (
         <FlatList
-          data={games}
-          keyExtractor={(game) => game.slug}
+          data={comics}
+          keyExtractor={(comic) => comic.id}
           renderItem={({ item, index }) => (
-            <AnimatedGameCard game={item} index={index} />
+            <AnimatedComicCard comic={item} index={index} />
           )}
         />
       )}
