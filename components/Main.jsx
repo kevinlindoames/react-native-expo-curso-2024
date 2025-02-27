@@ -7,27 +7,26 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { AnimatedComicCard } from "./ComicCard";
 import { Logo } from "./Logo";
 
-import { CircleInfoIcon } from "./Icons";
 import { Screen } from "./Screen";
 
 export function Main() {
-  const [games, setGames] = useState([]);
+  const [comics, setComics] = useState([]);
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    getLatestComics().then((games) => {
-      setGames(games);
+    getLatestComics().then((comics) => {
+      setComics(comics);
     });
   }, []);
 
   return (
     <Screen>
-      {games.length === 0 ? (
+      {comics.length === 0 ? (
         <ActivityIndicator color={"#fff"} size={"large"} />
       ) : (
         <FlatList
-          data={games}
-          keyExtractor={(game) => game.slug}
+          data={comics}
+          keyExtractor={(comic) => comic.id}
           renderItem={({ item, index }) => (
             <AnimatedComicCard comic={item} index={index} />
           )}

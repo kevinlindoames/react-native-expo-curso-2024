@@ -4,7 +4,7 @@ import { useLocalSearchParams } from "expo-router";
 import { Screen } from "../components/Screen";
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
-import { getGameDetails } from "../lib/metacritic";
+import { getComicDetails } from "../lib/marvel";
 import { Score } from "../components/Score";
 
 export default function Detail() {
@@ -13,7 +13,7 @@ export default function Detail() {
 
   useEffect(() => {
     if (gameslug) {
-      getGameDetails(gameslug).then(setGameInfo);
+      getComicDetails(gameslug).then(setGameInfo);
     }
   }, [gameslug]);
 
@@ -24,7 +24,7 @@ export default function Detail() {
           headerStyle: { backgroundColor: "#ffee00" },
           headerTintColor: "black",
           headerLeft: () => {},
-          headerTitle: "The Legend of Zelda: Breath of the Wild",
+          headerTitle: "Comic Detail",
           headerRight: () => {},
         }}
       />

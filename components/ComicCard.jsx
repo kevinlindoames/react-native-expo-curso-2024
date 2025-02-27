@@ -1,21 +1,37 @@
-import { View, Text, Image, StyleSheet, Animated } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Animated,
+  Pressable,
+} from "react-native";
 import { useEffect, useRef } from "react";
+import { Link } from "expo-router";
+import { styled } from "nativewind";
+import { Score } from "./Score";
+
+const StyledPressable = styled(Pressable);
 
 export function ComicCard({ comic }) {
   return (
-    <View className="bg-gray-300" key={comic.id}>
-      <Image
-        source={{ uri: comic.image }}
-        style={styles.comicImage}
-        resizeMode="cover"
-      />
-      <View style={styles.comicInfo}>
-        <Text style={styles.comicTitle} numberOfLines={2}>
-          {comic.title}
-        </Text>
-        <Text style={styles.comicIssue}>Issue #{comic.issueNumber}</Text>
-      </View>
-    </View>
+    <Link href={`/${comic.slug}`} asChild>
+      <StyledPressable className="active:opacity-70 border border-black active:border-white/50 mb-2 bg-gray-500/10 rounded-xl p-4">
+        <View className="flex-row gap-4" key={comic.slug}>
+          <Image source={{ uri: comic.image }} style={styles.comicImage} />
+          <View className="flex-shrink">
+            <Text style={styles.comicTitle} numberOfLines={2}>
+              {comic.title}
+            </Text>
+            <Score score={comic.score} maxScore={100} />
+
+            <Text className="mt-2 flex-shrink" style={styles.comicIssue}>
+              Issue #{comic.issueNumber}
+            </Text>
+          </View>
+        </View>
+      </StyledPressable>
+    </Link>
   );
 }
 
@@ -62,27 +78,5 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "green",
     marginBottom: 10,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#000",
-  },
-  loadingText: {
-    color: "#fff",
-    marginTop: 10,
-  },
-  errorContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 20,
-    backgroundColor: "#000",
-  },
-  errorText: {
-    color: "#e23636",
-    textAlign: "center",
-    fontSize: 16,
   },
 });
