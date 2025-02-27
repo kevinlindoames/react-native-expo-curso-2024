@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 
 export function ComicCard({ comic }) {
   return (
-    <View className="bg-cyan-100" key={comic.id}>
+    <View className="bg-gray-300" key={comic.id}>
       <Image
         source={{ uri: comic.image }}
         style={styles.comicImage}

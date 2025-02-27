@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link } from "expo-router";
 
 import { FlatList, View, ActivityIndicator, Pressable } from "react-native";
-import { getLatestGames } from "../lib/metacritic";
+import { getLatestComics } from "../lib/marvel";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { AnimatedGameCard } from "./GameCard";
+import { AnimatedComicCard } from "./ComicCard";
 import { Logo } from "./Logo";
 
 import { CircleInfoIcon } from "./Icons";
@@ -15,7 +15,7 @@ export function Main() {
   const insets = useSafeAreaInsets();
 
   useEffect(() => {
-    getLatestGames().then((games) => {
+    getLatestComics().then((games) => {
       setGames(games);
     });
   }, []);
@@ -29,7 +29,7 @@ export function Main() {
           data={games}
           keyExtractor={(game) => game.slug}
           renderItem={({ item, index }) => (
-            <AnimatedGameCard game={item} index={index} />
+            <AnimatedComicCard comic={item} index={index} />
           )}
         />
       )}
